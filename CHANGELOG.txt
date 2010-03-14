@@ -1,0 +1,7 @@
+========================
+Django Lingua Changelog
+========================
+
+Version 0.1, 22nd February 2010
+========================
+Initial Release

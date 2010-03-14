@@ -1,0 +1,36 @@
+1. Checkout the code
+    svn checkout http://django-lingua.googlecode.com/svn/trunk/ django-lingua-read-only
+
+2. add the path to PYTHONPATH
+
+3. add 'lingua' to your INSTALLED_APPS:
+
+    INSTALLED_APPS = (
+        'lingua',
+    )
+
+    4. Create or modify your models:
+
+    from django.db import models
+    from lingua import translation
+
+    class Table(models.Model):
+        class Translation(translation.Translation):
+            name = models.CharField(max_length=32)
+
+
+5. Fill some data into the database to translate
+
+6. Run ./manage.py collectmessages
+
+    It will fetch all data to translate and store them into the file 'db_translation.html'.
+
+7. Run django-admin.py makemessages -l <lang>
+
+8. Translate into your language. You can use rosetta.
+
+9. Run django-admin.py compilemessages
+
+Done!
+
+Check the django i18n documentation to get more information.

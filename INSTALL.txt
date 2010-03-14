@@ -1,0 +1,6 @@
+Check out or download the code
+git clone http://github.com/geomin/django-lingua.git
+
+Add the path to PYTHONPATH
+
+Ready!
