@@ -1,5 +1,5 @@
 1. Checkout the code
-    svn checkout http://django-lingua.googlecode.com/svn/trunk/ django-lingua-read-only
+    git http://github.com/geomin/django-lingua.git
 
 2. add the path to PYTHONPATH
 
@@ -9,7 +9,7 @@
         'lingua',
     )
 
-    4. Create or modify your models:
+4. Create or modify your models:
 
     from django.db import models
     from lingua import translation
