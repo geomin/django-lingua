@@ -1,12 +1,13 @@
 1. Checkout the code
     git http://github.com/geomin/django-lingua.git
 
-2. add the path to PYTHONPATH
+2. Add the path to PYTHONPATH
 
-3. add 'lingua' to your INSTALLED_APPS:
+3. Add 'lingua' to your INSTALLED_APPS:
 
     INSTALLED_APPS = (
         'lingua',
+        ...
     )
 
 4. Create or modify your models:
@@ -18,18 +19,32 @@
         class Translation(translation.Translation):
             name = models.CharField(max_length=32)
 
+5. Active the admin(optional)
+    from lingua.admin import LinguaModelAdmin
+    from django.contrib import admin
+    from yourproject.yourapp.models import SomeModel    
 
-5. Fill some data into the database to translate
+    class SomeAdminClass(LinguaModelAdmin):
+        #custom options
+        pass
+    
+    admin.site.register( SomeModel, SomeAdminClass )
 
-6. Run ./manage.py collectmessages
+6. Fill some data into the database to translate
+
+7. Run ./manage.py collectmessages
 
     It will fetch all data to translate and store them into the file 'db_translation.html'.
 
-7. Run django-admin.py makemessages -l <lang>
+8. Run django-admin.py makemessages -l <lang>
 
-8. Translate into your language. You can use rosetta.
+9. Translate into your language. Use the admin interface to translate your models. 
+   As soon you save the model the translate is active. 
 
-9. Run django-admin.py compilemessages
+10. Run django-admin.py compilemessages
+
+11. In the view you can use like <field_name>_<lang>, i.e. name_de or name_es.
+    Use <field_name>_00 to get the original value
 
 Done!
 

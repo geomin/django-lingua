@@ -1,5 +1,5 @@
 """
-File: translation.py
+File: utils.py
 
 Copyright (c) aquarianhouse.com | Georg Kasmin.
 All rights reserved.
@@ -29,41 +29,13 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
-from django.db.models import signals
-import handler
-from django.utils.translation import activate, deactivate
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import trans_real, activate
+from django.utils.thread_support import currentThread
+import gettext
 
-signals.post_init.connect(handler.post_init)
-
-class Translation(object):
-
-    def contribute_to_class(self, main_cls, name):
-        """Get translation fields and convert them then the class is ready
-           Django set the model fields as attributes 
-        """        
-        import settings
-        _languages = dict(settings.__dict__.get('LANGUAGES', {}))
-
-        translation_fields = [x for x in [x.lower() for x in self.__dict__ if '__' not in x] ]
-
-        for x in translation_fields:
-            main_cls.add_to_class(x, self.__dict__[x])
-
-        def _getattr(klass, name):
-            if '_' in name:
-                lang, v = name.split('_')[::-1][0], name.split('_')[::-1][1]
-                
-                if lang in _languages:
-                    activate(lang)
-                    value = unicode(_(getattr(klass,v)))                
-                    deactivate()
-
-                    return value
-            return klass.__class__.__getattribute__(klass, name)
-
-        main_cls.add_to_class('_translation_fields', tuple(translation_fields))
-        main_cls.add_to_class('_languages', _languages)     
-        main_cls.add_to_class('__getattr__', _getattr)
-
-    contribute_to_class = classmethod(contribute_to_class)
+def clear_gettext_cache():
+    gettext._translations = {}
+    trans_real._translations = {}
+    trans_real._default = None
+    prev = trans_real._active.pop(currentThread(), None)
+    if prev: activate(prev.language())

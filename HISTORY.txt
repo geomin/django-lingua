@@ -1,0 +1,4 @@
+Version 0.8.0
+--------------
+- access direct the field translation i.e. <field>_<lang> name_de or name_es
+- translation over admin and the translation is instantly active as soon the model is saved.
