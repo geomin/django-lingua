@@ -43,7 +43,7 @@ class LinguaModelAdmin(admin.ModelAdmin):
             for l in model._languages.keys():
                 name = '_'.join((field, l))
                 field_type = fields_type[field]
-                fields.append( (name, field_type.__class__() ) )
+                fields.append( (name, field_type.__class__(widget=field_type.widget) ) )
         return fields
 
     @staticmethod
