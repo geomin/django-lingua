@@ -57,19 +57,23 @@ class LinguaModelAdmin(admin.ModelAdmin):
         class LinguaAdminForm(form):
             def __init__(self, *args, **kwargs):
                 super(LinguaAdminForm, self).__init__(*args, **kwargs)
-                instance = kwargs["instance"]
-                fields_type = dict([(x, self.fields[x]) for x in instance._translation_fields])
+
+                instance = kwargs.get("instance", None)
+
+                fields_type = dict([(x, self.fields[x]) for x in self._meta.model._translation_fields])
                 fields = LinguaModelAdmin.get_fields_with_type(self._meta.model, fields_type)
 
-                #create field dynamically
+                #create fields dynamically
                 for x, y in fields:
                     self.fields[x] = y
 
                 #make sure the original value will be shown
-                for x in instance._translation_fields:
-                    self.initial[x] = getattr(instance, "_".join( (x,'00') ))
+                for x in self._meta.model._translation_fields:
+                    self.initial[x] = instance and getattr(instance, "_".join( (x,'00') )) or ""
 
-                self.initial.update(dict( [ (x, getattr(instance, x)) for x,y in fields] ))
+                initial = instance and dict( [ (x, getattr(instance, x)) for x,y in fields] ) or {}
+
+                self.initial.update(initial)
 
             def save(self, *args, **kwargs):
                 model = super(LinguaAdminForm, self).save(*args, **kwargs)
@@ -88,9 +92,9 @@ class LinguaModelAdmin(admin.ModelAdmin):
                             self.languages_po[l] = polib.pofile(p)
 
                 for f in model._translation_fields:
-                    msgid = getattr(model, "_".join((f,"00")))
                     for l in model._languages:
                         field = "_".join((f,l))
+                        msgid = self.cleaned_data.get(f, None)
                         c = self.cleaned_data.get(field, None)
                         if l in self.languages_po:
                             po = self.languages_po[l]
