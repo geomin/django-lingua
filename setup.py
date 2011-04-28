@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
     name='lingua',
@@ -6,14 +6,13 @@ setup(
     url='http://github.com/geomin/django-lingua',
     maintainer='Georg Kasmin',
     maintainer_email='georg@aquarianhouse.com',
-    description='Djano model translation on basis of i18n',
-    packages=[],
-    cmdclass={},
-    data_files=[],
+    description='Django model translation on basis of gettext',
     classifiers=['License :: OSI Approved :: BSD License',
                  'Intended Audience :: Developers',
                  'Programming Language :: Python',
                  'Topic :: I18N :: Internalization'],
-    package_data={},
-    zip_safe=False,
+    license='BSD',
+    platforms=['any'],
+    install_requires=['polib'],#pip
+    packages=find_packages(),
 )
