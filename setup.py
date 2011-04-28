@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name='ligua',
+    name='lingua',
     version='0.8.2',
     url='http://github.com/geomin/django-lingua',
     maintainer='Georg Kasmin',
