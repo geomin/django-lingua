@@ -42,7 +42,7 @@ class Translation(object):
         """Get translation fields and convert them then the class is ready
            Django set the model fields as attributes 
         """        
-        import settings
+        from django.conf import settings
         _languages = dict(settings.__dict__.get('LANGUAGES', {}))
 
         translation_fields = [x for x in [x.lower() for x in self.__dict__ if '__' not in x] ]
